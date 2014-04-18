@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#columns {
+	float:left;
+	height:100%;
+	font-family:Verdana, Geneva, sans-serif;
+}
+
+#left_column {
+	background-color:#CCC;
+	border-radius:4px;
+	box-shadow:1px 1px 1px #999;
+	-moz-box-shadow:1px 1px 1px #999;
+	-webkit-box-shadow:1px 1px 1px #999;
+	float:left;
+	padding:4px;
+	width:150px;
+}
+
+#right_column {
+	float:left;
+	padding:4px;
+	width:500px;
+}
+
+#right_top {
+	margin-bottom:4px;
+}
+
+#right_bot {
+	margin-top:4px;
+}
+
+#new_product_form {
+	background-color:#CCC;
+	border-radius:4px;
+	box-shadow:1px 1px 1px #999;
+	-moz-box-shadow:1px 1px 1px #999;
+	-webkit-box-shadow:1px 1px 1px #999;
+	padding:4px;
+	/*display:none;*/
+}
+
+input {
+	border-radius:4px;
+}
+
+.button {
+	background-color:#FFF;
+}
