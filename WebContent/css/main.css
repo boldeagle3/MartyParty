@@ -8,11 +8,11 @@ body {
 /* Using the font used in The Prisoner (1968) */
 @font-face {
     font-family: 'webfontregular';
-          src: url('css/Fonts/village-webfont.eot');
-		src: url('css/Fonts/village-webfont.eot?#iefix') format('embedded-opentype'),
-         url('css/Fonts/village-webfont.woff') format('woff'),
-         url('css/Fonts/village-webfont.ttf') format('truetype'),
-         url('css/Fonts/village-webfont.svg#webfontregular') format('svg');
+          src: url('Fonts/village-webfont.eot');
+		src: url('Fonts/village-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/village-webfont.woff') format('woff'),
+         url('Fonts/village-webfont.ttf') format('truetype'),
+         url('Fonts/village-webfont.svg#webfontregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
