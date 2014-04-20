@@ -38,6 +38,7 @@
 						if (rs.next()) {
 						session.setAttribute("id",rs.getInt("id"));
 						session.setAttribute("name",rs.getString("name"));
+						session.setAttribute("role",rs.getString("role"));
 						login = 1;
 					} else {
 						login = 2;
