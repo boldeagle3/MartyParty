@@ -37,14 +37,7 @@ try {
 <br>
 <hr>
 <ul>
-	<li>
-        <a href="registration.jsp">Register</a>
-    </li>
-
- 	<li>
-        <a href="login.jsp">Login</a> 
-    </li> 
-     <li>
+    <li>
         <a href="logout.jsp">Logout</a> 
     </li>   
     <li>
@@ -52,7 +45,10 @@ try {
     </li> 
     <li>
     	<a href="Category.jsp">Category</a>
+    </li>
     <li>
+    	<a href="products_management.jsp">Products</a>
+    </li>
 
 	
 </ul>
