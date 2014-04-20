@@ -37,7 +37,7 @@
 You are not logged in<br/>
 <%} else {
 %>
-Welcome <%=session.getAttribute("name")%>,<%=session.getAttribute("role")%>
+Welcome <%=session.getAttribute("name")%>
 <br>
 <%
     }

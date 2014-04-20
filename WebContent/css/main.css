@@ -1,0 +1,49 @@
+body {
+	font-family:"webfontregular";
+	margin: 0;
+	padding: 0;
+	font-size:18px;
+}
+
+/* Using the font used in The Prisoner (1968) */
+@font-face {
+    font-family: 'webfontregular';
+          src: url('Fonts/village-webfont.eot');
+		src: url('Fonts/village-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/village-webfont.woff') format('woff'),
+         url('Fonts/village-webfont.ttf') format('truetype'),
+         url('Fonts/village-webfont.svg#webfontregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-align:center;
+}
+
+h1{
+margin:0;
+padding-top:15px;
+padding-bottom:15px;
+
+}
+
+table{
+margin:0 auto; 
+
+}
+
+header{
+background-color:#E0E0E0;
+
+}
+
+hr{
+margin-top:0;
+
+}
+
+th{
+padding-left:40px;
+}
