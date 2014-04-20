@@ -3,6 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="css/main.css" type="text/css" title = "normal" />
+
 </head>
 <body>
 
@@ -33,7 +35,7 @@ try {
 
 <%@include file="header.jsp" %>
 
-<h1 style = "text-align:center">Test!!!</h1>
+<h1 style = "text-align:center">Welcome to <span style = "text-decoration:line-through"> Amazon</span> Martyzon!!!</h1>
 <br>
 <hr>
 <ul>
