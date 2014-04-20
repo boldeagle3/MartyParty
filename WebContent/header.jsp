@@ -12,8 +12,8 @@
             <%
                 try {                 
                     Class.forName("org.postgresql.Driver");
-					Connection conn = null;
-					conn = DriverManager.getConnection(
+					Connection conn1 = null;
+					conn1 = DriverManager.getConnection(
 					"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 
             %>
@@ -32,12 +32,18 @@
 
 
 <%
-    if ((session.getAttribute("id") == null) || (session.getAttribute("") == "")) {
+    if ((session.getAttribute("id") == null) || (session.getAttribute("id") == "")) {
 %>
-You are not logged in<br/>
+You are not logged in
+<div style = "float: right;display:inline">
+<a href = registration.jsp>Registration</a> | <a href = login.jsp>Login</a>
+</div>
 <%} else {
 %>
 Welcome <%=session.getAttribute("name")%>
+<div style = "float: right;display:inline">
+<a href = logout.jsp>Logout</a>
+</div>
 <br>
 <%
     }

@@ -3,6 +3,9 @@
 <!doctype html>
 <html>
 <head>
+
+<link rel="stylesheet" href="css/main.css" type="text/css" title = "normal" />
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <%-- Set the scripting language to Java and --%>
             <%-- Import the java.sql package --%>
@@ -130,62 +133,14 @@
 
 </script>
 
-<style type="text/css">
-body {
-	font-family:"webfontregular";
-	margin: 0;
-	padding: 0;
-	font-size:18px;
-}
 
-/* Using the font used in The Prisoner (1968) */
-@font-face {
-    font-family: 'webfontregular';
-          src: url('css/Fonts/village-webfont.eot');
-		src: url('css/Fonts/village-webfont.eot?#iefix') format('embedded-opentype'),
-         url('css/Fonts/village-webfont.woff') format('woff'),
-         url('css/Fonts/village-webfont.ttf') format('truetype'),
-         url('css/Fonts/village-webfont.svg#webfontregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-h1, h2, h3, h4, h5, h6 {
-	text-align:center;
-}
-
-h1{
-margin:0;
-padding-top:15px;
-padding-bottom:15px;
-
-}
-
-table{
-margin:0 auto; 
-
-}
-
-header{
-background-color:#E0E0E0;
-
-}
-
-hr{
-margin-top:0;
-
-}
-
-th{
-padding-left:40px;
-}
-
-</style>
 </head>
 <body>
 
 <header>
+
+<%@include file="header.jsp" %>
+
 <h1> REGISTER HERE!!!!!!</h1>
 </header>
 <hr> 
@@ -216,9 +171,57 @@ padding-left:40px;
 	</th>
 	<th>
 		<select name = "state">
-			<option selected="" value="ca">CA</option>
-			<option value="lol">LOL</option>
-		</select>
+	<option value="AL">Alabama</option>
+	<option value="AK">Alaska</option>
+	<option value="AZ">Arizona</option>
+	<option value="AR">Arkansas</option>
+	<option value="CA">California</option>
+	<option value="CO">Colorado</option>
+	<option value="CT">Connecticut</option>
+	<option value="DE">Delaware</option>
+	<option value="FL">Florida</option>
+	<option value="GA">Georgia</option>
+	<option value="HI">Hawaii</option>
+	<option value="ID">Idaho</option>
+	<option value="IL">Illinois</option>
+	<option value="IN">Indiana</option>
+	<option value="IA">Iowa</option>
+	<option value="KS">Kansas</option>
+	<option value="KY">Kentucky</option>
+	<option value="LA">Louisiana</option>
+	<option value="ME">Maine</option>
+	<option value="MD">Maryland</option>
+	<option value="MA">Massachusetts</option>
+	<option value="MI">Michigan</option>
+	<option value="MN">Minnesota</option>
+	<option value="MS">Mississippi</option>
+	<option value="MO">Missouri</option>
+	<option value="MT">Montana</option>
+	<option value="NE">Nebraska</option>
+	<option value="NV">Nevada</option>
+	<option value="NH">New Hampshire</option>
+	<option value="NJ">New Jersey</option>
+	<option value="NM">New Mexico</option>
+	<option value="NY">New York</option>
+	<option value="NC">North Carolina</option>
+	<option value="ND">North Dakota</option>
+	<option value="OH">Ohio</option>
+	<option value="OK">Oklahoma</option>
+	<option value="OR">Oregon</option>
+	<option value="PA">Pennsylvania</option>
+	<option value="RI">Rhode Island</option>
+	<option value="SC">South Carolina</option>
+	<option value="SD">South Dakota</option>
+	<option value="TN">Tennessee</option>
+	<option value="TX">Texas</option>
+	<option value="UT">Utah</option>
+	<option value="VT">Vermont</option>
+	<option value="VA">Virginia</option>
+	<option value="WA">Washington</option>
+	<option value="WV">West Virginia</option>
+	<option value="WI">Wisconsin</option>
+	<option value="WY">Wyoming</option>
+</select>		
 	</th>
 	
 <th>
