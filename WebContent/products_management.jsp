@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Products page</title>
+<title>Products Management</title>
 <link rel="stylesheet" type="text/css" href="products_management.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<%
@@ -25,7 +25,7 @@
 			String newCategory = request.getParameter("new_category").trim();
 			String newPrice = request.getParameter("new_price").trim();
 			
-			Statement st = conn.createStatement();
+			Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 	        conn.setAutoCommit(false);
 	        try {
@@ -51,10 +51,10 @@
 	        }
             conn.commit();
             conn.setAutoCommit(true);
-		} else if (action.equals("all_categories")) {
-			System.out.println("allcategories");
-		} else if (action.equals("filter")) {
-			System.out.println("filter");
+		} else if (action.equals("Update")) {
+			
+		} else if (action.equals("Delete")) {
+			
 		}
 	}
 	%>
@@ -63,39 +63,37 @@
 <body>
 <div id="columns">
 <div id="left_column">
-    Categories
 	<form action="products_management.jsp" method="post">
-   		<input type="radio" name="action" value="all_categories" onclick="this.form.submit();">All Categories<br>
+   		<input type="radio" name="action" value="all_categories" onclick="this.form.submit();">All Categories
+   		<br>
+    	<%
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	    conn.setAutoCommit(false);   
+	    ResultSet rsCategories = st.executeQuery("SELECT name FROM category;");
+    
+    	if (rsCategories.first()) {
+	    	String categoryName = rsCategories.getString("name");
+	    %>
+    	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
+    	<br>
+    	<%
+	    	while (rsCategories.relative(1)) {
+	    		categoryName = rsCategories.getString("name");
+	    %>
+    	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
+    	<br>
+    	<%
+    		}
+    	%>
+    </form>
     <%
-    
-    Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-    conn.setAutoCommit(false);
-    
-    ResultSet rs = st.executeQuery("SELECT name FROM category");
-    
-    if (rs.first()) {
-    	String categoryName = rs.getString("name");
-    	%>
-    	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%><br>
-    	<%
-    	while (rs.relative(1)) {
-    		categoryName = rs.getString("name");
-        	%>
-    		<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%><br>
-    		<%
+    	} else {
+    		System.out.println("no categories");
     	}
-    	%>
-    	</form>
-    	<%
-    } else {
-    	System.out.println("no categories");
-    }
-    conn.commit();
-    conn.setAutoCommit(true);
+    	conn.commit();
+    	conn.setAutoCommit(true);
     %>
 </div>
-
 <div id="right_column">
 	<div id="right_top">
     <table>
@@ -109,104 +107,128 @@
         </td>
     </tr>
     </table>
+    <%
+    try {
+    %>
     <form id="new_product_form" action="products_management.jsp" method="post">
    		<input type="hidden" name="action" value="new_product">
         <table>
-        <tr>
-        	<td>Name:</td>
-            <td><input type="text" name="new_name" /></td>
-        </tr>
-        <tr>
-            <td>SKU:</td>
-            <td><input type="text" name="new_sku" /></td>
-        </tr>
-        <tr>
-            <td>Category:</td>
-            <td>
-            	<select id="category" name="new_category">
-            	<%
-            	Statement stc = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-                conn.setAutoCommit(false);
-                
-                ResultSet rsc = stc.executeQuery("SELECT name FROM category");
-                
-                if (rsc.first()) {
-                	String categoryName = rsc.getString("name");
-                	%>
-                	<option value="<%=categoryName%>"><%=categoryName%>
-                	<%
-                	while (rsc.relative(1)) {
-                		categoryName = rsc.getString("name");
-                    	%>
-                		<option value="<%=categoryName%>"><%=categoryName%>
-                		<%
-                	}
-                }
-                	%>
-                
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Price:</td>
-            <td><input type="text" name="new_price" /></td>
-        </tr>
+	        <tr>
+	        	<td>Name:</td><td><input type="text" name="new_name" required /></td>
+	        </tr>
+	        <tr>
+	            <td>SKU:</td><td><input type="text" name="new_sku" required /></td>
+	        </tr>
+	        <tr>
+	            <td>Category:</td>
+	            <td>
+	            	<select id="category" name="new_category">
+	            	<%
+	                if (rsCategories.first()) {
+	                	String categoryName = rsCategories.getString("name");
+	                %>
+	                	<option value="<%=categoryName%>"><%=categoryName%>
+	                	<%
+	                	while (rsCategories.relative(1)) {
+	                		categoryName = rsCategories.getString("name");
+	                    %>
+	                	<option value="<%=categoryName%>"><%=categoryName%>
+	                	<%
+	                	}
+	                }
+	                	%>
+	                </select>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>Price:</td><td><input type="text" name="new_price" required /></td>
+	        </tr>
         </table>
         <input type="submit" class="button" value="Submit a new product" />
     </form>
+    <%
+    } catch(Exception e) {
+    	// TODO handle exception
+    }
+    %>
     </div>
     <div id="right_bot">
     	<table id="products_table">
-    	<%
-    	if (action != null && !action.equals("all_categories")) {
-    		if (action.equals("search_product")) {	// Search for a product
-    			String search = request.getParameter("search");
-    			
-    			Statement sts = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-    	        conn.setAutoCommit(false);
-    	        
-    	        ResultSet rss = st.executeQuery("SELECT * FROM products WHERE name LIKE '%" + search + "%';");
-
-    	        if (rss.first()) {
-    	    	   	String productName = rss.getString("name");
-    	        	String productSKU = rss.getString("sku");
-    	        	String productCategory = rss.getString("category");
-    	        	String productPrice = rss.getString("price");
-    	        	
-    	        	System.out.println(productName+productSKU+productCategory+productPrice);
-    	        	
-    	        	// TODO display product information
-    	        	
-    	        	while (rss.relative(1)) {
-    	        		productName = rss.getString("name");
-    		        	productSKU = rss.getString("sku");
-    		        	productCategory = rss.getString("category");
-    		        	productPrice = rss.getString("price");
-    	        		
-    		        	// TODO display product information
-    	        	}
-    	        } else {
-    	        	// TODO: no results
-    	        }
-    	        
-                conn.commit();
-                conn.setAutoCommit(true);
-    		} else if (action.startsWith("filter_")) {	// Filter by category
-    	
+    		<tr>
+    			<td>Name</td><td>SKU</td><td>Category</td><td>Price</td>
+    		</tr>
+    		<%
+	    	//Statement sts = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	        conn.setAutoCommit(false);
+        	ResultSet rs;
+	   		if (action != null && action.equals("search_product")) {	// Search for a product
+	   			String search = request.getParameter("search");
+	   	        rs = st.executeQuery(
+	   	        		"SELECT * " +
+	   	        		"FROM products " +
+	   	        		"WHERE name LIKE '%" + search + "%';"
+	   			);
+   			} else if (action != null && action.startsWith("filter_")) {	// Filter by category
+	   	        String theCategory = action.substring("filter_".length());
+   				System.out.println(theCategory);
+	   	        rs = st.executeQuery(
+	   	        		"SELECT * " +
+	   	        		"FROM products " +
+	   	        		"WHERE category = '" + theCategory + "'" +
+	   	        		";"
+	   	        );
+   			} else {	// Show all products
+	    		rs = st.executeQuery(
+	    				"SELECT * " +
+	    				"FROM products" +
+	    				";"
+	    		);
+   			}
+	   		
+    		if (rs.first()) {
+ 	    	   	String productName = rs.getString("name");
+ 	        	String productSKU = rs.getString("sku");
+ 	        	String productCategory = rs.getString("category");
+ 	        	String productPrice = rs.getString("price");
+ 	        	%>
+ 	        	<tr>
+ 	        		<form action="products_management.jsp" method="post">
+	 	        		<td><input type="text" name="new_name" value="<%=productName%>"></td>
+	 	        		<td><input type="text" name="new_sku" value="<%=productSKU%>"></td>
+	 	        		<td><input type="text" name="new_category" value="<%=productCategory%>"></td>
+	 	        		<td><input type="text" name="new_price" value="<%=productPrice%>"></td>
+	 	        		<td><input type="submit" name="action" value="Update"></td>
+	 	        		<td><input type="submit" name="action" value="Delete"></td>
+ 	        		</form>
+ 	        	</tr>
+ 	        	<%
+ 	        	while (rs.relative(1)) {
+ 	        		productName = rs.getString("name");
+ 		        	productSKU = rs.getString("sku");
+ 		        	productCategory = rs.getString("category");
+ 		        	productPrice = rs.getString("price");
+ 		        	%>
+ 	 	        	<tr>
+ 	 	        		<td><input type="text" name="new_name" value="<%=productName%>"></td>
+	 	        		<td><input type="text" name="new_sku" value="<%=productSKU%>"></td>
+	 	        		<td><input type="text" name="new_category" value="<%=productCategory%>"></td>
+	 	        		<td><input type="text" name="new_price" value="<%=productPrice%>"></td>
+	 	        		<td><input type="submit" name="action" value="Update"></td>
+	 	        		<td><input type="submit" name="action" value="Delete"></td>
+ 	 	        	</tr>
+ 	 	        	<%
+ 	        	}
     		}
-    	} else {
-    		// show all products
     		
-    	}
+    		conn.commit();
+        	conn.setAutoCommit(true);
     	%>
     	</table>
     </div>
 </div>
 </div>
-	<%
-	conn.close();
-	%>
+<%
+conn.close();
+%>
 </body>
 </html>

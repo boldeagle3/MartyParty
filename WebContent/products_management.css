@@ -39,7 +39,6 @@
 	-moz-box-shadow:1px 1px 1px #999;
 	-webkit-box-shadow:1px 1px 1px #999;
 	padding:4px;
-	/*display:none;*/
 }
 
 input {
@@ -48,4 +47,15 @@ input {
 
 .button {
 	background-color:#FFF;
+}
+
+#products_table {
+	border:1px solid black;
+	float:left;
+	width:500px;
+}
+
+#products_table tr td {
+	border:1px solid black;
+	width:auto;
 }
