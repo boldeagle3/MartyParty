@@ -16,26 +16,24 @@
 	String action = request.getParameter("action");
 	System.out.println("action="+action);
 	if (action != null) {
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        conn.setAutoCommit(false);
+        
 		if (action.equals("new_product")) {	// Submit a new product
-			%>
-			<script type="text/javascript">
-			<%
-			String newName = request.getParameter("new_name").trim();
-			String newSKU = request.getParameter("new_sku").trim();
-			String newCategory = request.getParameter("new_category").trim();
-			String newPrice = request.getParameter("new_price").trim();
-			
-			Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-	        conn.setAutoCommit(false);
 	        try {
+				%>
+				<script type="text/javascript">
+				<%
+	        	String newName = request.getParameter("new_name").trim();
+				String newSKU = request.getParameter("new_sku").trim();
+				String newCategory = request.getParameter("new_category").trim();
+				String newPrice = request.getParameter("new_price").trim();
 		        st.execute("INSERT INTO products (name,sku,category,price) VALUES ('" +
 		        			newName + "','" +
 		        			newSKU + "','" +
 		        			newCategory + "','" + 
 		        			newPrice + "');"
 		        );
-		        
 		        %>
 	            alert("Successfully submitted a new product:"+
 	            	"\nname: <%=newName%>" +
@@ -46,20 +44,42 @@
 	            </script>
 	            <%
 	        } catch (PSQLException e) {
-	        	// TODO product already exists
 	        	e.printStackTrace();
 	        }
-            conn.commit();
-            conn.setAutoCommit(true);
 		} else if (action.equals("Update")) {
-			
+			// TODO
+			/*
+			st.execute(
+					"UPDATE products " +
+					"SET " +
+					"WHERE" +
+					";"
+			);
+			*/
 		} else if (action.equals("Delete")) {
-			
+			try {
+				String newName = request.getParameter("new_name").trim();
+				String newSKU = request.getParameter("new_sku").trim();
+				String newCategory = request.getParameter("new_category").trim();
+				String newPrice = request.getParameter("new_price").trim();
+				st.execute(
+						"DELETE FROM products " +
+						"WHERE name = '" + newName + "' " +
+								"AND sku = '" + newSKU + "'" +
+								"AND category = '" + newCategory + "'" +
+								"AND price = '" + newPrice + "'" +
+						";"
+				);
+				
+			} catch (PSQLException e) {
+				e.printStackTrace();
+			}
 		}
+		conn.commit();
+        conn.setAutoCommit(true);
 	}
 	%>
 </head>
-
 <body>
 <div id="columns">
 <div id="left_column">
@@ -77,7 +97,7 @@
     	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
     	<br>
     	<%
-	    	while (rsCategories.relative(1)) {
+	    	while (rsCategories.next()) {
 	    		categoryName = rsCategories.getString("name");
 	    %>
     	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
@@ -129,7 +149,7 @@
 	                %>
 	                	<option value="<%=categoryName%>"><%=categoryName%>
 	                	<%
-	                	while (rsCategories.relative(1)) {
+	                	while (rsCategories.next()) {
 	                		categoryName = rsCategories.getString("name");
 	                    %>
 	                	<option value="<%=categoryName%>"><%=categoryName%>
@@ -202,7 +222,7 @@
  	        		</form>
  	        	</tr>
  	        	<%
- 	        	while (rs.relative(1)) {
+ 	        	while (rs.next()) {
  	        		productName = rs.getString("name");
  		        	productSKU = rs.getString("sku");
  		        	productCategory = rs.getString("category");
