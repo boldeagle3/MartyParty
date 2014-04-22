@@ -9,7 +9,6 @@
 <link rel="stylesheet" type="text/css" href="products.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<%
-	// Keep track of stuffs	
 	Class.forName("org.postgresql.Driver");
 	Connection conn = DriverManager.getConnection(
 			"jdbc:postgresql://localhost:5432/postgres",
@@ -85,21 +84,12 @@
 		} else if (action.equals("Delete")) {
 			// Delete a product
 			try {
-				String newName = request.getParameter("new_name");
-				String newSKU = request.getParameter("new_sku");
-				String newCategory = request.getParameter("new_category");
-				float newPrice = Float.parseFloat(request.getParameter("new_price"));
+				String id = request.getParameter("id");
 				
 				PreparedStatement prst = conn.prepareStatement(
 						"DELETE FROM products " +
-						"WHERE name=? " +
-							"AND sku=? " +
-							"AND category=? " +
-							"AND price=?;");
-				prst.setString(1, newName);
-				prst.setString(2, newSKU);
-				prst.setString(3, newCategory);
-				prst.setFloat(4, newPrice);
+						"WHERE id=?;");
+				prst.setInt(1, Integer.parseInt(id));
 				
 				prst.execute();
 				conn.commit();
