@@ -32,7 +32,7 @@ try {
    st.executeUpdate("CREATE TABLE category( id serial NOT NULL,name varchar(30) UNIQUE NOT NULL,description varchar(140))");
    st.executeUpdate("CREATE TABLE products(id serial NOT NULL" + 
    										", name varchar(30) NOT NULL" +
-   										", sku varchar(30) UNIQUE NOT NULL" +
+   										", sku varchar(30) NOT NULL" +
    										", category varchar(30) NOT NULL" +
    										", price decimal(18,2) NOT NULL" +
    										");"

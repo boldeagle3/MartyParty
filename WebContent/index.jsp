@@ -49,7 +49,11 @@ try {
     	<a href="Category.jsp">Category</a>
     </li>
     <li>
-    	<a href="products_management.jsp">Products</a>
+    	<% if(session.getAttribute("role") != null && session.getAttribute("role").equals("owner")) { %>
+    		<a href="products_management.jsp">Products</a>
+    	<% } else { %>
+    		<a href="products_browsing.jsp">Products</a>
+    	<% } %>
     </li>
 
 	
