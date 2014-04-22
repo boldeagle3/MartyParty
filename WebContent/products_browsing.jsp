@@ -129,7 +129,7 @@
         	%>
         	<tr>
 	        	<td>
-	        		<a href="ProductOrder.jsp" name="product" value=<%=productName%>><%=productName%>
+	        		<a href="ProductOrder.jsp" name="product" value=<%=productID%>><%=productName%>
 	        	</td>
 	       		<td><%=productSKU%></td>
 	       		<td><%=productCategory%></td>
