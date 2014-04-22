@@ -27,26 +27,26 @@ try {
             	conn.setAutoCommit(true);
             }
             
-//            String deletion=request.getParameter("delete");
-             if (action != null && action.equals("delete")) {
-            	System.out.println("gets into the intial part delete "+request.getParameter("nameboxde"));
+            String deletion=request.getParameter("delete");
+             if (deletion != null) {
+            	System.out.println("gets into the intial part delete "+request.getParameter("delete"));
             	conn.setAutoCommit(false);
             	PreparedStatement pstmt =conn.prepareStatement(
             			"DELETE FROM category WHERE category.name= ?");
-            	pstmt.setString(1,request.getParameter("nameboxde").trim());
+            	pstmt.setString(1,request.getParameter("delete").trim());
             	int rowCount= pstmt.executeUpdate();
             	conn.commit();
             	conn.setAutoCommit(true);
             }
             
-           // String update=request.getParameter("update");
-             if (action != null && action.equals("update")) {
+             String update=request.getParameter("update");
+             if (update != null) {
             	System.out.println("gets into the intial part update"+request.getParameter("nameboxup"));
             	conn.setAutoCommit(false);
             	PreparedStatement pstmt =conn.prepareStatement(
             			"UPDATE category SET description=? WHERE category.name=?");
             	pstmt.setString(1,request.getParameter("dboxup"));
-            	pstmt.setString(2,request.getParameter("nameboxup").trim());
+            	pstmt.setString(2,request.getParameter("update").trim());
             	int rowCount= pstmt.executeUpdate();
             	conn.commit();
             	conn.setAutoCommit(true);
@@ -67,19 +67,19 @@ try {
 	<input type="text" name="dbox">
 	<button type="submit">Insert</button>	
 	</form>
-	
+	<!--
 	<form method="POST" action="Category.jsp">
 	<input type="hidden" name="action" value="delete">
 	<input type="text" name="nameboxde">
 	<button type="submit">Delete</button>
-	</form>
-	
+	</form>-->
+	<!--  
 	<form method="POST" action="Category.jsp">
 	<input type="hidden" name="action" value="update">
 	<input type="text" name="nameboxup">
 	<input type="text" name="dboxup">
 	<button type="submit">Update</button>
-	</form>
+	</form>-->
 	<%} %>
 	<table border="3">
 	<tr>
@@ -96,8 +96,21 @@ try {
 			<tr>
 			<td><%=rs.getString("name") %></td>
 			<td><%=rs.getString("description") %></td>
-			
+			<td>	
+			<form method="POST" action="Category.jsp">
+			<input type="hidden" name="delete" value="<%=rs.getString("name")%>">
+			<button type="submit">Delete</button>
+			</form>		
+			</td>
+			<td>
+				<form method="POST" action="Category.jsp">
+				<input type="hidden" name="update" value="<%=rs.getString("name")%>">
+				<input type="text" name="dboxup">
+				<button type="submit">Update</button>
+				</form>
+			</td>
 			</tr>
+			
 			<% 
 		}
 	%>
