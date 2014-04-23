@@ -21,10 +21,11 @@ try {
 
     //-----------------if need to delete tables to run, do here------------------------------//
 	DatabaseMetaData md = conn.getMetaData();
-		
+		st.executeUpdate("DROP TABLE IF EXISTS cart");
     	st.executeUpdate("DROP TABLE IF EXISTS users");
     	st.executeUpdate("Drop TABLE IF EXISTS category");
     	st.executeUpdate("DROP TABLE IF EXISTS products");
+    	
     //set up tables
 
    st.executeUpdate("CREATE TABLE users(  id serial NOT NULL, name varchar(30) NOT NULL, role varchar(30), age int, " +
@@ -34,10 +35,10 @@ try {
    										", name varchar(30) NOT NULL" +
    										", sku varchar(30) UNIQUE NOT NULL" +
    										", category varchar(30) NOT NULL" +
-   										", price decimal(18,2) NOT NULL" +
+   										", price decimal(18,2) NOT NULL, PRIMARY KEY(id)" +
    										");"
    	);
-    
+    st.executeUpdate("CREATE TABLE cart (id          SERIAL PRIMARY KEY, class       INTEGER REFERENCES users (id) NOT NULL,student     INTEGER REFERENCES products (id) NOT NULL);");
     response.sendRedirect("index.jsp");
 
 	conn.close();

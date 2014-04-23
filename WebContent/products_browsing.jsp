@@ -128,8 +128,11 @@
         	
         	%>
         	<tr>
-	        	<td>
+	        	<td><%if(session.getAttribute("id")!=null){ %>
 	        		<a href="ProductOrder.jsp" name="product" value=<%=productID%>><%=productName%>
+	        		<%}else{%>
+	        		<%=productName %>
+	        		<%} %>
 	        	</td>
 	       		<td><%=productSKU%></td>
 	       		<td><%=productCategory%></td>
