@@ -15,6 +15,10 @@
 			"postgres",
 			"password");
 	conn.setAutoCommit(false);
+	
+	if (session.getAttribute("productsSearch") == null) {
+			session.setAttribute("productsSearch", "");
+	}
 
 	String action = request.getParameter("action");
 	if (action != null) {
@@ -121,17 +125,10 @@
         
     	    while (rsCategories.next()) {
    	    		String categoryName = rsCategories.getString("name");
-   	    		if (categoryName.equals(session.getAttribute("productsCategory"))) {
-   	    			%>
-   	    			<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();" checked><%=categoryName%>
-   	    	    	<br>
-   	    	    	<%
-   	    		} else {
-   	    		    %>
-   	    	    	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
-   	    	    	<br>
-   	    	    	<%
-   	    		}
+    		    %>
+    	    	<input type="radio" name="action" value="filter_<%=categoryName%>" onclick="this.form.submit();"><%=categoryName%>
+    	    	<br>
+    	    	<%
         	}
     	    
     	    rsCategories.close();
@@ -147,9 +144,12 @@
    		<tr>
    			<td colspan="2">
     			<form action="products_management.jsp" method="post">
-                <input type="text" name="search" />
+                <input id="searchField" type="text" name="search" />
                 <input type="submit" name="action" value="Search products">
            		</form>
+           		<script type="text/javascript">
+           			document.getElementById("searchField").value = "<%=session.getAttribute("productsSearch").toString()%>";
+           		</script>
    			</td>
    		</tr>
    		<tr>
@@ -195,9 +195,6 @@
    		<%
        	ResultSet rsProducts = null;
    		PreparedStatement prst = null;
-   		if (session.getAttribute("productsSearch") == null) {
-   			session.setAttribute("productsSearch", "");
-   		}
    		if (action != null && action.equals("Search products")) {
    			// Show products that match the search
    			try {
@@ -222,7 +219,12 @@
    	   			rsProducts = prst.executeQuery();
    	   			conn.commit();
    	   			
-   	   			session.setAttribute("productsSearch", "%"+request.getParameter("search").trim()+"%");
+   	   			session.setAttribute("productsSearch", request.getParameter("search").trim());
+   	   			%>
+   	   			<script type="text/javascript">
+	   			document.getElementById("searchField").value = "<%=session.getAttribute("productsSearch").toString()%>";
+	   			</script>
+   	   			<%
    			} catch (Exception e) {
    				e.printStackTrace();
    			}
@@ -237,7 +239,7 @@
   	  							"AND name LIKE ?;");
   	  			
   	  			prst.setString(1, action.substring("filter_".length()));
-  	  			prst.setString(2, session.getAttribute("productsSearch").toString());
+  	  			prst.setString(2, "%"+session.getAttribute("productsSearch").toString()+"%");
   	  			
   	  			rsProducts = prst.executeQuery();
   				conn.commit();
@@ -257,7 +259,7 @@
 	  						"FROM products " +
 	  						"WHERE name LIKE ?;");
   					
-  					prst.setString(1, session.getAttribute("productsSearch").toString());
+  					prst.setString(1, "%"+session.getAttribute("productsSearch").toString()+"%");
   				} else {
 	  				if (null != session.getAttribute("productsCategory")) {
 	  					prst = conn.prepareStatement(
@@ -266,7 +268,7 @@
 		  						"WHERE category=? " +
   	  									"AND name LIKE ?;");
 	  					prst.setString(1, session.getAttribute("productsCategory").toString());
-	  					prst.setString(2, session.getAttribute("productsSearch").toString());
+	  					prst.setString(2, "%"+session.getAttribute("productsSearch").toString()+"%");
 	  				} else {
 		  				prst = conn.prepareStatement(
 		  						"SELECT * " +
