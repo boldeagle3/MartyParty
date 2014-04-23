@@ -21,36 +21,40 @@ try {
 
     //-----------------if need to delete tables to run, do here------------------------------//
 	DatabaseMetaData md = conn.getMetaData();
-		st.executeUpdate("DROP TABLE IF EXISTS cart");
-    	st.executeUpdate("DROP TABLE IF EXISTS users");
-    	st.executeUpdate("Drop TABLE IF EXISTS category");
-    	st.executeUpdate("DROP TABLE IF EXISTS products");
+	st.executeUpdate("DROP TABLE IF EXISTS cart");
+   	st.executeUpdate("DROP TABLE IF EXISTS users");
+   	st.executeUpdate("Drop TABLE IF EXISTS category");
+   	st.executeUpdate("DROP TABLE IF EXISTS products");
     	
     //set up tables
-
-   st.executeUpdate("CREATE TABLE users(  id serial NOT NULL, name varchar(30) NOT NULL, role varchar(30), age int, " +
-	    "state varchar(30) , PRIMARY KEY(id) )");
-   st.executeUpdate("CREATE TABLE category( id serial NOT NULL,name varchar(30) UNIQUE NOT NULL,description varchar(140))");
-   st.executeUpdate("CREATE TABLE products(id serial NOT NULL" + 
-   										", name varchar(30) NOT NULL" +
-   										", sku varchar(30) UNIQUE NOT NULL" +
-   										", category varchar(30) NOT NULL" +
-   										", price decimal(18,2) NOT NULL, PRIMARY KEY(id)" +
-   										");"
-   	);
-    st.executeUpdate("CREATE TABLE cart (id          SERIAL PRIMARY KEY, user       INTEGER REFERENCES users (id) NOT NULL,product     INTEGER REFERENCES products (id) NOT NULL, amount INT);");
-    response.sendRedirect("index.jsp");
-
+	st.executeUpdate("CREATE TABLE users( id 	SERIAL PRIMARY KEY," +
+										" name	varchar(30) NOT NULL," +
+										" role	varchar(30)," +
+										" age	INTEGER," +
+										" state	varchar(30));");
+	st.executeUpdate("CREATE TABLE category( id				SERIAL PRIMARY KEY," +
+											"name			varchar(30) UNIQUE NOT NULL," +
+											"description	varchar(140));");
+	st.executeUpdate("CREATE TABLE products( id			SERIAL PRIMARY KEY," + 
+   											"name		varchar(30) NOT NULL," +
+   											"sku		varchar(30) UNIQUE NOT NULL," +
+   											"category	varchar(30) NOT NULL," +
+   											"price		numeric(18,2) NOT NULL);");
+	st.executeUpdate("CREATE TABLE cart( id			SERIAL PRIMARY KEY," +
+										"userID		INTEGER REFERENCES users (id) NOT NULL," +
+										"product	INTEGER REFERENCES products (id) NOT NULL," +
+										"amount		INTEGER);");
+    
+	response.sendRedirect("index.jsp");
 	conn.close();
 	
 } catch (SQLException sqle) {
     out.println("sqlexception: " + sqle.getMessage());
+    sqle.printStackTrace();
 } catch (Exception e) {
     out.println("exception: " + e.getMessage());
 }
 
 %>
-
-
 
 </body>
