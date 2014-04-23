@@ -195,6 +195,9 @@
    		<%
        	ResultSet rsProducts = null;
    		PreparedStatement prst = null;
+   		if (session.getAttribute("productsSearch") == null) {
+   			session.setAttribute("productsSearch", "");
+   		}
    		if (action != null && action.equals("Search products")) {
    			// Show products that match the search
    			try {
@@ -247,11 +250,13 @@
   			// Show all products
   			try {
   				if (action == null || action.equals("all_categories")) {
-  					session.setAttribute("productsCategory",null);
+  					session.setAttribute("productsCategory", null);
+  					
   					prst = conn.prepareStatement(
 	  						"SELECT * " +
 	  						"FROM products " +
 	  						"WHERE name LIKE ?;");
+  					
   					prst.setString(1, session.getAttribute("productsSearch").toString());
   				} else {
 	  				if (null != session.getAttribute("productsCategory")) {
@@ -262,7 +267,6 @@
   	  									"AND name LIKE ?;");
 	  					prst.setString(1, session.getAttribute("productsCategory").toString());
 	  					prst.setString(2, session.getAttribute("productsSearch").toString());
-	  					
 	  				} else {
 		  				prst = conn.prepareStatement(
 		  						"SELECT * " +
@@ -276,7 +280,7 @@
   			}
   		}
    		
-       	while (rsProducts.next()) {
+       	while (rsProducts != null && rsProducts.next()) {
        		String productID = rsProducts.getString("id");
        		String productName = rsProducts.getString("name");
         	String productSKU = rsProducts.getString("sku");
