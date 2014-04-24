@@ -19,6 +19,37 @@
 	%>
 	<%
 		
+		String pro=request.getParameter("product");
+		System.out.println("pro is null maybe");
+		if(pro!=null){
+			conn.setAutoCommit(false);
+			ResultSet tt=null;
+			PreparedStatement ps=conn.prepareStatement(
+					"SELECT * FROM product WHERE id=?");
+			ps.setString(1,pro);
+		    tt=ps.executeQuery();
+		    System.out.println("gets to the point");
+		    if(tt.next()){
+		    	System.out.println("Is tt null? "+tt.getString("name"));
+		    	%>
+		    		<table>
+		    		<form method="POST">
+		    		<tr>
+		    			<td><%=tt.getString("name") %></td>
+		    			<td><%=tt.getInt("price") %></td>
+		    			<input type="text" name="amount">
+		    			<button type="submit">Accepted</button>
+		    			
+		    		</tr>
+		    		</form>
+		    		</table>
+		    	<% 
+		    	conn.setAutoCommit(true);
+		    }
+		    }
+			
+		
+		
 	%>
 	<form method="POST"></form>
 	<tr>

@@ -38,7 +38,7 @@ try {
    										", price decimal(18,2) NOT NULL, PRIMARY KEY(id)" +
    										");"
    	);
-    st.executeUpdate("CREATE TABLE cart (id          SERIAL PRIMARY KEY, user       INTEGER REFERENCES users (id) NOT NULL,product     INTEGER REFERENCES products (id) NOT NULL, amount INT);");
+    st.executeUpdate("CREATE TABLE cart (id          SERIAL PRIMARY KEY, userid       INTEGER REFERENCES users (id) NOT NULL,product     INTEGER REFERENCES products (id) NOT NULL, amount INT);");
     response.sendRedirect("index.jsp");
 
 	conn.close();
