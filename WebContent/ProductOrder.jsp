@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Current Contents</h1>
-	<table border="3">
+
 	<%
 		try{
 			  Class.forName("org.postgresql.Driver");
@@ -17,31 +17,41 @@
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 		
 	%>
-	<%
-		
+	<%	String proccess=request.getParameter("amount");
+		if(proccess!=null){
+			conn.setAutoCommit(false);
+			ResultSet peq=null;
+			PreparedStatement rr=conn.prepareStatement(
+					"INSERT INTO cart(userid,products,amount) VALUES()");
+			conn.setAutoCommit(true);
+		}
+		System.out.println("what is going on?");
 		String pro=request.getParameter("product");
 		System.out.println("pro is null maybe");
 		if(pro!=null){
+			System.out.println("hello world");
 			conn.setAutoCommit(false);
 			ResultSet tt=null;
 			PreparedStatement ps=conn.prepareStatement(
-					"SELECT * FROM product WHERE id=?");
-			ps.setString(1,pro);
+					"SELECT * FROM products WHERE id=?");
+			ps.setInt(1, 1);
+			System.out.println("gets to the point a");
 		    tt=ps.executeQuery();
-		    System.out.println("gets to the point");
+		    System.out.println("gets to the point b");
 		    if(tt.next()){
 		    	System.out.println("Is tt null? "+tt.getString("name"));
 		    	%>
 		    		<table>
-		    		<form method="POST">
+		    		<form action="products_browsing.jsp" method="POST">
 		    		<tr>
 		    			<td><%=tt.getString("name") %></td>
 		    			<td><%=tt.getInt("price") %></td>
-		    			<input type="text" name="amount">
-		    			<button type="submit">Accepted</button>
+		    			<td><input type="number" name="amount" min="1" max="2000"></td>
+		    			<td><button type="submit">Accepted</button></td>
 		    			
 		    		</tr>
 		    		</form>
+		    		
 		    		</table>
 		    	<% 
 		    	conn.setAutoCommit(true);
@@ -51,7 +61,7 @@
 		
 		
 	%>
-	<form method="POST"></form>
+   <table border="3">
 	<tr>
 		<th>name</th>	
 		<th>quantity</th>
@@ -62,9 +72,10 @@
 	conn.setAutoCommit(false);
 	ResultSet rs=null;
 	PreparedStatement statement=conn.prepareStatement(
-			"SELECT * FROM cart WHERE user=?");
+			"SELECT * FROM cart WHERE userid=?");
 	String s=session.getAttribute("id").toString();
-	statement.setString(1,s);
+	int d=Integer.parseInt(s);
+	statement.setInt(1, d);
 	rs= statement.executeQuery();
 	while(rs.next()){
 		ResultSet gg=null;
