@@ -17,12 +17,19 @@
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 		
 	%>
-	<%	String proccess=request.getParameter("amount");
+	<%	System.out.println("let it begin");
+		String proccess=request.getParameter("amount");
 		if(proccess!=null){
+			System.out.println("does it get in here");
 			conn.setAutoCommit(false);
 			ResultSet peq=null;
 			PreparedStatement rr=conn.prepareStatement(
-					"INSERT INTO cart(userid,products,amount) VALUES()");
+					"INSERT INTO cart(userid,product,amount) VALUES(?,?,?)");
+			rr.setInt(1, Integer.parseInt(session.getAttribute("id").toString()));
+			rr.setInt(2,Integer.parseInt(request.getParameter("pid")));
+			rr.setInt(3,Integer.parseInt(request.getParameter("amount")));
+			rr.executeUpdate();
+			response.sendRedirect("products_browsing.jsp");
 			conn.setAutoCommit(true);
 		}
 		System.out.println("what is going on?");
@@ -34,7 +41,8 @@
 			ResultSet tt=null;
 			PreparedStatement ps=conn.prepareStatement(
 					"SELECT * FROM products WHERE id=?");
-			ps.setInt(1, 1);
+			System.out.println("product id is "+Integer.parseInt(pro));
+			ps.setInt(1,Integer.parseInt(pro));
 			System.out.println("gets to the point a");
 		    tt=ps.executeQuery();
 		    System.out.println("gets to the point b");
@@ -42,8 +50,9 @@
 		    	System.out.println("Is tt null? "+tt.getString("name"));
 		    	%>
 		    		<table>
-		    		<form action="products_browsing.jsp" method="POST">
+		    		<form action="ProductOrder.jsp" method="POST">
 		    		<tr>
+		    			<input type="hidden" name="pid" value="<%=Integer.parseInt(pro)%>">
 		    			<td><%=tt.getString("name") %></td>
 		    			<td><%=tt.getInt("price") %></td>
 		    			<td><input type="number" name="amount" min="1" max="2000"></td>
@@ -81,8 +90,8 @@
 		ResultSet gg=null;
 		PreparedStatement st=conn.prepareStatement(
 				"SELECT * FROM products WHERE id=?");
-		statement.setString(1,new Integer(rs.getInt("product")).toString());
-		gg=statement.executeQuery();
+		st.setInt(1,Integer.parseInt(rs.getString("product")));
+		gg=st.executeQuery();
 		if(gg.next()){
 			%>
 			<tr>
