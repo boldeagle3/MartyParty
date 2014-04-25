@@ -18,7 +18,7 @@
 		
 	%>
 	<%	System.out.println("let it begin");
-		String proccess=request.getParameter("amount");
+    	String proccess=request.getParameter("amount");
 		if(proccess!=null){
 			System.out.println("does it get in here");
 			conn.setAutoCommit(false);
