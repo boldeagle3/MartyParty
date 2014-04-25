@@ -175,10 +175,13 @@
         	
         	%>
         	<tr>
-	        	<td><a href="ProductOrder.jsp" name="productID" value="<%=productID%>"><%=productName%></td>
+        		<form action="ProductOrder.jsp" method="POST">
+        		<input type="hidden" name="product" value="<%=productID%>">
+	        	<td><button type="submit" name="productID" value="<%=productID%>" onclick="this.form.submit();"><%=productName%></td>
 	       		<td><%=productSKU%></td>
 	       		<td><%=productCategory%></td>
 	       		<td><%=productPrice%></td>
+	       		</form>
         	</tr>
         	<%
        	}

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Current Contents</h1>
-	<table border="3">
+
 	<%
 		try{
 			  Class.forName("org.postgresql.Driver");
@@ -16,11 +16,61 @@
 				conn = DriverManager.getConnection(
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 		
-	%>
-	<%
+	%>	
+	<%	System.out.println("let it begin");
+		String proccess=request.getParameter("amount");
+		if(proccess!=null){
+			System.out.println("does it get in here");
+			conn.setAutoCommit(false);
+			ResultSet peq=null;
+			PreparedStatement rr=conn.prepareStatement(
+					"INSERT INTO cart(userid,product,amount) VALUES(?,?,?)");
+			rr.setInt(1, Integer.parseInt(session.getAttribute("id").toString()));
+			rr.setInt(2,Integer.parseInt(request.getParameter("pid")));
+			rr.setInt(3,Integer.parseInt(request.getParameter("amount")));
+			rr.executeUpdate();
+			response.sendRedirect("products_browsing.jsp");
+			conn.setAutoCommit(true);
+		}
+		System.out.println("what is going on?");
+		String pro=request.getParameter("product");
+		System.out.println("pro is null maybe");
+		if(pro!=null){
+			System.out.println("hello world");
+			conn.setAutoCommit(false);
+			ResultSet tt=null;
+			PreparedStatement ps=conn.prepareStatement(
+					"SELECT * FROM products WHERE id=?");
+			System.out.println("product id is "+Integer.parseInt(pro));
+			ps.setInt(1,Integer.parseInt(pro));
+			System.out.println("gets to the point a");
+		    tt=ps.executeQuery();
+		    System.out.println("gets to the point b");
+		    if(tt.next()){
+		    	System.out.println("Is tt null? "+tt.getString("name"));
+		    	%>
+		    		<table>
+		    		<form action="ProductOrder.jsp" method="POST">
+		    		<tr>
+		    			<input type="hidden" name="pid" value="<%=Integer.parseInt(pro)%>">
+		    			<td><%=tt.getString("name") %></td>
+		    			<td><%=tt.getInt("price") %></td>
+		    			<td><input type="number" name="amount" min="1" max="2000"></td>
+		    			<td><button type="submit">Accepted</button></td>
+		    			
+		    		</tr>
+		    		</form>
+		    		
+		    		</table>
+		    	<% 
+		    	conn.setAutoCommit(true);
+		    }
+		    }
+			
+		
 		
 	%>
-	<form method="POST"></form>
+   <table border="3">
 	<tr>
 		<th>name</th>	
 		<th>quantity</th>
@@ -31,16 +81,17 @@
 	conn.setAutoCommit(false);
 	ResultSet rs=null;
 	PreparedStatement statement=conn.prepareStatement(
-			"SELECT * FROM cart WHERE user=?");
+			"SELECT * FROM cart WHERE userid=?");
 	String s=session.getAttribute("id").toString();
-	statement.setString(1,s);
+	int d=Integer.parseInt(s);
+	statement.setInt(1, d);
 	rs= statement.executeQuery();
 	while(rs.next()){
 		ResultSet gg=null;
 		PreparedStatement st=conn.prepareStatement(
 				"SELECT * FROM products WHERE id=?");
-		statement.setString(1,new Integer(rs.getInt("product")).toString());
-		gg=statement.executeQuery();
+		st.setInt(1,Integer.parseInt(rs.getString("product")));
+		gg=st.executeQuery();
 		if(gg.next()){
 			%>
 			<tr>

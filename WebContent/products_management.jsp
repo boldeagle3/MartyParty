@@ -67,20 +67,31 @@
 				String newCategory = request.getParameter("new_category");
 				float newPrice = Float.parseFloat(request.getParameter("new_price"));
 				
+				PreparedStatement prst0 = conn.prepareStatement(
+						"DELETE FROM products " +
+						"WHERE id=?;");
+				prst0.setInt(1, Integer.valueOf(id));
+				prst0.execute();
 				PreparedStatement prst = conn.prepareStatement(
-						"BEGIN; " +
+						"INSERT INTO products (name,sku,category,price) " +
+	        			"VALUES (?,?,?,?);");
+				/* PostgreSQL has some problem updating with unique constraint?		
+						"BEGIN " +
 						"UPDATE products " +
 						"SET name=?,sku=?,category=?,price=? " +
-						"WHERE products.id=id; " +
-						"COMMIT;");
-				
+						"FROM (SELECT * FROM products ORDER BY id DESC) " +
+						"WHERE products.id=id " +
+						"END;");
+				*/
 				prst.setString(1, newName);
 				prst.setString(2, newSKU);
 				prst.setString(3, newCategory);
 				prst.setFloat(4, newPrice);
 				
+				prst0.execute();
 				prst.execute();
 				conn.commit();
+				prst0.close();
 				prst.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -334,8 +345,10 @@
         	</tr>
         	<%
        	}
-       	rsProducts.close();
-       	prst.close();
+       	if (rsProducts != null && prst != null) {
+       		rsProducts.close();
+       		prst.close();
+       	}
    	%>
    	</table>
 </div>
