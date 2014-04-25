@@ -137,12 +137,10 @@
 </head>
 <body>
 
-<header>
 
 <%@include file="header.jsp" %>
 
 <h1> REGISTER HERE!!!!!!</h1>
-</header>
 <hr> 
 
 

@@ -40,20 +40,8 @@
 		Welcome to <span style="text-decoration: line-through"> Amazon</span>
 		Martyzon!!!
 	</h1>
-	<br>
-	<hr>
-	<ul>
-		<li><a href="logout.jsp">Logout</a></li>
-		<li><a href="loginTest.jsp">Login Test</a></li>
-		<li><a href="Category.jsp">Category</a></li>
-		
-			<%
-				if (session.getAttribute("role") != null
-						&& session.getAttribute("role").equals("owner")) {
-			%> <li><a href="products_management.jsp">Products Management</a></li> <%
- 	}
- %>     
-		<li><a href="products_browsing.jsp">Products Browsing</a></li>
-	</ul>
+	<center>
+	<img src = "img/dawn.jpg" alt = "Yes" > 
+	<center>
 </body>
 </html>
