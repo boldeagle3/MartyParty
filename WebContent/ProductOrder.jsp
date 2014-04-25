@@ -110,7 +110,7 @@
 	
 	
 	%>
-	<!-- list shoping cart -->
+	<!-- list shopping cart -->
 	</table>
 	<!-- ask if how much of the thing they selected from productBrowsing they wanted added to the shopping list -->
 	<%conn.close();
