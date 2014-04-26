@@ -88,7 +88,7 @@
 <link rel="stylesheet" href="css/main.css" type="text/css" title = "normal" />
 
 </head>
-<body>
+<body >
 
 <%@include file="header.jsp" %>
 
