@@ -175,7 +175,7 @@
         	
         	%>
         	<tr>
-        		<form action="ProductOrder.jsp" method="POST">
+        		<form action="ProductOrder.jsp" method="GET">
         		<input type="hidden" name="product" value="<%=productID%>">
 	        	<td><button type="submit" name="productID" value="<%=productID%>" onclick="this.form.submit();"><%=productName%></td>
 	       		<td><%=productSKU%></td>
