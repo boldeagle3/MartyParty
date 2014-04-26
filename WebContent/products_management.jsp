@@ -118,6 +118,7 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
+<%if(session.getAttribute("role") != null && session.getAttribute("role").equals("owner")) {%>
 <div id="columns">
 <div id="left_column">
 	<form action="products_management.jsp" method="post">
@@ -355,6 +356,10 @@
 </div>
 <%
 conn.close();
+} else {%>
+	<%//@include file="error.jsp" %>
+	<%
+}
 %>
 </body>
 </html>

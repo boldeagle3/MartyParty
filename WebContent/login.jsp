@@ -90,12 +90,10 @@
 </head>
 <body>
 
-<header>
 <%@include file="header.jsp" %>
 
-<h1> PUT YOUR NAME IN HERE YOU SCUM</h1>
-</header>
-<hr> 
+<div style = "background-image:url('img/happy.jpg');background-size:100%;background-repeat:no-repeat;";>
+<h1> PUT YOUR NAME IN HERE </h1>
 
 
 <form action = "login.jsp" method = "post">
@@ -119,7 +117,51 @@
 </form>
 </table>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
+
+
+</div>
 
             <%
 

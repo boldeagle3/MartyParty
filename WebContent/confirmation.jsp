@@ -9,6 +9,8 @@
 </head>
 <body>
 	<%@include file="header.jsp"%>
+	<%if(session.getAttribute("role") != null &&
+			(session.getAttribute("role").equals("owner") || session.getAttribute("role").equals("customer"))) {%>
 	<%
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -17,6 +19,10 @@
 					"jdbc:postgresql://localhost:5432/postgres",
 					"postgres", "password");
 	%>
+	
+	<p style="text-align:center">Purchase successful!
+		<br>You have purchased:
+	</p>
 	<table border="3">
 		<tr>
 			<th>name</th>
@@ -65,6 +71,10 @@
 		} catch (Exception e) {
 			out.println(e.getMessage());
 		}
+	} else {%>
+		<%//@include file="error.jsp" %>
+		<%
+	}
 	%>
 </body>
 </html>
