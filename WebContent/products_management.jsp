@@ -117,8 +117,8 @@
 	%>
 </head>
 <body>
-<%@include file="header.jsp" %>
 <%if(session.getAttribute("role") != null && session.getAttribute("role").equals("owner")) {%>
+<%@include file="header.jsp" %>
 <div id="columns">
 <div id="left_column">
 	<form action="products_management.jsp" method="post">
@@ -357,7 +357,11 @@
 <%
 conn.close();
 } else {%>
-	<%//@include file="error.jsp" %>
+	<script type="text/javascript">
+    	window.onload = function(){
+    		document.location.href = "error.jsp";
+    	}
+    </script>
 	<%
 }
 %>
