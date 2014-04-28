@@ -17,6 +17,7 @@
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 		
 	%>
+	<%@include file="header.jsp" %>
 	<table border="3">
 	<tr>
 		<th>name</th>	
@@ -25,6 +26,9 @@
 		
 	</tr>
 	<%
+	 if(session.getAttribute("role")==null){
+     	response.sendRedirect("error.jsp");
+     }
 	conn.setAutoCommit(false);
 	ResultSet rs=null;
 	PreparedStatement statement=conn.prepareStatement(

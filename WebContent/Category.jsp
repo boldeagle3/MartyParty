@@ -15,8 +15,12 @@ try {
                   
 
             %>
+            <%@include file="header.jsp" %>
             <%
             String action=request.getParameter("action");
+            if(session.getAttribute("role")==null||session.getAttribute("role").equals("customer")){
+            	response.sendRedirect("error.jsp");
+            }
             if (action != null && action.equals("insert")) {
             	try{
             	System.out.println("gets into the intial part");

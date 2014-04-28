@@ -17,9 +17,16 @@
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
 		
 	%>	
-	<%	System.out.println("let it begin");
+	<%@include file="header.jsp" %>
+	<%	
+		System.out.println("let it begin");
+		String pro=request.getParameter("product");
 		String proccess=request.getParameter("amount");
+		if(proccess==null&&pro==null){
+			response.sendRedirect("error.jsp");
+		}
 		if(proccess!=null){
+			try{
 			System.out.println("does it get in here");
 			conn.setAutoCommit(false);
 			ResultSet peq=null;
@@ -31,9 +38,13 @@
 			rr.executeUpdate();
 			response.sendRedirect("products_browsing.jsp");
 			conn.setAutoCommit(true);
+			}catch(SQLException e){
+				%>Incorrect input<% 
+				pro=request.getParameter("pid");
+			}
 		}
 		System.out.println("what is going on?");
-		String pro=request.getParameter("product");
+		
 		System.out.println("pro is null maybe");
 		if(pro!=null){
 			System.out.println("hello world");
@@ -50,7 +61,7 @@
 		    	System.out.println("Is tt null? "+tt.getString("name"));
 		    	%>
 		    		<table>
-		    		<form action="ProductOrder.jsp" method="POST">
+		    		<form action="ProductOrder.jsp" method="GET">
 		    		<tr>
 		    			<input type="hidden" name="pid" value="<%=Integer.parseInt(pro)%>">
 		    			<td><%=tt.getString("name") %></td>
