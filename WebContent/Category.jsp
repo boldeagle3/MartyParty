@@ -15,7 +15,7 @@ try {
                   
 
             %>
-            <%@include file="header.jsp" %>
+
             <%
             String action=request.getParameter("action");
             if(session.getAttribute("role")==null||session.getAttribute("role").equals("customer")){

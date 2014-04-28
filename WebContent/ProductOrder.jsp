@@ -41,6 +41,12 @@
 			}catch(SQLException e){
 				%>Incorrect input<% 
 				pro=request.getParameter("pid");
+				System.out.println("Gets into that nice sweet spot");
+			}
+			catch(NumberFormatException e){
+				%>Incorrect input<% 
+				pro=request.getParameter("pid");
+				System.out.println("Gets into that nice sweet spot");
 			}
 		}
 		System.out.println("what is going on?");
@@ -66,7 +72,7 @@
 		    			<input type="hidden" name="pid" value="<%=Integer.parseInt(pro)%>">
 		    			<td><%=tt.getString("name") %></td>
 		    			<td><%=tt.getInt("price") %></td>
-		    			<td><input type="number" name="amount" min="1" max="2000"></td>
+		    			<td><input type="text" name="amount"></td>
 		    			<td><button type="submit">Accepted</button></td>
 		    			
 		    		</tr>
