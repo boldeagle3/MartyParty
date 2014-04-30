@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@include file="header.jsp" %>
 <title>Insert title here</title>
 </head>
 <body>
@@ -15,9 +16,11 @@
 				Connection conn = null;
 				conn = DriverManager.getConnection(
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
+				conn.setAutoCommit(false);
+
 		
 	%>	
-	<%@include file="header.jsp" %>
+	
 	<%	
 		System.out.println("let it begin");
 		String pro=request.getParameter("product");
@@ -27,7 +30,7 @@
 		}
 		if(proccess!=null){
 			try{
-			System.out.println("does it get in here");
+			System.out.println("does it get in here kappa");
 			conn.setAutoCommit(false);
 			ResultSet peq=null;
 			PreparedStatement rr=conn.prepareStatement(
@@ -36,8 +39,10 @@
 			rr.setInt(2,Integer.parseInt(request.getParameter("pid")));
 			rr.setInt(3,Integer.parseInt(request.getParameter("amount")));
 			rr.executeUpdate();
+			System.out.println("does it get past here maybe");
+
+			
 			response.sendRedirect("products_browsing.jsp");
-			conn.setAutoCommit(true);
 			}catch(SQLException e){
 				%>Incorrect input<% 
 				pro=request.getParameter("pid");
@@ -80,7 +85,6 @@
 		    		
 		    		</table>
 		    	<% 
-		    	conn.setAutoCommit(true);
 		    }
 		    }
 			
@@ -121,7 +125,7 @@
 			
 		%>
 		
-		<% conn.setAutoCommit(true);
+		<%
 	}
 	
 	
@@ -130,7 +134,9 @@
 	<!-- list shopping cart -->
 	</table>
 	<!-- ask if how much of the thing they selected from productBrowsing they wanted added to the shopping list -->
-	<%conn.close();
+	<%			conn.setAutoCommit(true);
+
+	conn.close();
 	}catch (SQLException sqle) {
 	    out.println(sqle.getMessage());
 	} catch (Exception e) {

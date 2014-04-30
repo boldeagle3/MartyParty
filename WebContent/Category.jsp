@@ -12,6 +12,7 @@ try {
 					Connection conn = null;
 					conn = DriverManager.getConnection(
 					"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
+					conn.setAutoCommit(false);
                   
 
             %>
@@ -21,7 +22,11 @@ try {
             if(session.getAttribute("role")==null||session.getAttribute("role").equals("customer")){
             	response.sendRedirect("error.jsp");
             }
-            if (action != null && action.equals("insert")) {
+            if(request.getParameter("namebox") != null &&request.getParameter("namebox").contains("\"")){
+            	%>that wont work here<% 
+            }
+            if (action != null && action.equals("insert")&&!request.getParameter("namebox").contains("\"")) {
+            	
             	try{
             	System.out.println("gets into the intial part");
             	conn.setAutoCommit(false);
@@ -31,10 +36,9 @@ try {
             	pstmt.setString(2,request.getParameter("dbox"));
             	int rowCount= pstmt.executeUpdate();
             	conn.commit();
-            	conn.setAutoCommit(true);
             	}
             	catch(SQLException e){
-            		%>name or description too long<%
+            		%>name or description error<%
             	
             	}
             }
@@ -43,7 +47,6 @@ try {
              if (deletion != null) {
             	 try{
             	System.out.println("gets into the intial part delete "+request.getParameter("delete"));
-            	conn.setAutoCommit(false);
             	PreparedStatement ps =conn.prepareStatement(
             			"SELECT * FROM products WHERE category=?");
             	ps.setString(1,request.getParameter("delete").trim());
@@ -59,7 +62,6 @@ try {
             		%>You can not delete <%=request.getParameter("delete").trim()%><%
             	}
             	conn.commit();
-            	conn.setAutoCommit(true);
             	 }catch(SQLException e){
             		 %>SQL delete problem <%
             	
@@ -70,14 +72,12 @@ try {
              if (update != null) {
             	 try{
             	System.out.println("gets into the intial part update"+request.getParameter("nameboxup"));
-            	conn.setAutoCommit(false);
             	PreparedStatement pstmt =conn.prepareStatement(
             			"UPDATE category SET description=? WHERE category.name=?");
             	pstmt.setString(1,request.getParameter("dboxup"));
             	pstmt.setString(2,request.getParameter("update").trim());
             	int rowCount= pstmt.executeUpdate();
             	conn.commit();
-            	conn.setAutoCommit(true);
             	 }
             	 catch(SQLException e){
             		 %>Description too long<%
@@ -93,13 +93,18 @@ try {
 	if(session.getAttribute("role") != null && session.getAttribute("role").equals("owner")) {
 		System.out.println("gets into here");
 	%>
+	<div style = "text-align:center">Insert</div>
+	<table>
+	<tr>
 	<form method="POST" action="Category.jsp">
 	<input type="hidden" name="action" value="insert">
-	<input type="text" name="namebox">
-	<textarea name="dbox" rows="1" cols="20"></textarea>
+	<td><input type="text" name="namebox" placeholder="name" required></td>
+	<td><textarea name="dbox" rows="1" cols="20" placeholder="description"></textarea></td>
 	<!-- <input type="text" name="dbox"> -->
-	<button type="submit">Insert</button>	
+	<td><button type="submit">Insert</button></td>
+	</tr>	
 	</form>
+	</table>
 	<!--
 	<form method="POST" action="Category.jsp">
 	<input type="hidden" name="action" value="delete">
@@ -120,7 +125,6 @@ try {
 		<th>description</th>
 	</tr>
 	<% 
-		conn.setAutoCommit(false);
 		ResultSet rs=null;
 		Statement statement=conn.createStatement();
 		rs=statement.executeQuery("SELECT * FROM category");
@@ -142,7 +146,6 @@ try {
 			<button type="submit">Delete</button>
 			</form>
 			<%}
-            	conn.setAutoCommit(true);
 			%>
 				
 			</td>
@@ -161,6 +164,7 @@ try {
 	<!-- loop through and add all categories -->
 	</table>
 	<%
+conn.setAutoCommit(true);
  conn.close();
 } catch (SQLException sqle) {
     out.println(sqle.getMessage());

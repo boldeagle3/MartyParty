@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@include file="header.jsp" %>0
 	<h1>Shopping cart</h1>
 	<!-- Display the shoping cart of the person -->
 	<%
@@ -15,9 +16,11 @@
 				Connection conn = null;
 				conn = DriverManager.getConnection(
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
+				conn.setAutoCommit(false);
+
 		
 	%>
-	<%@include file="header.jsp" %>
+	
 	<table border="3">
 	<tr>
 		<th>name</th>	
@@ -26,6 +29,16 @@
 		
 	</tr>
 	<%
+	 String b=request.getParameter("credit");
+	if(b!=null){
+		 try { 
+			 int q= Integer.parseInt(b);
+			 response.sendRedirect("confirmation.jsp");
+    	 } catch(NumberFormatException e) { 
+    		%>Not a number<%
+    	}
+		
+	}
 	 if(session.getAttribute("role")==null){
      	response.sendRedirect("error.jsp");
      }
@@ -37,7 +50,7 @@
 	int d=Integer.parseInt(s);
 	statement.setInt(1, d);
 	rs= statement.executeQuery();
-	int sum=0;
+	double sum=0;
 	while(rs.next()){
 		ResultSet gg=null;
 		PreparedStatement st=conn.prepareStatement(
@@ -49,25 +62,27 @@
 			<tr>
 			<td><%=gg.getString("name") %></td>
 			<td><%=rs.getInt("amount") %></td>
-			<td>$<%=gg.getInt("price")*rs.getInt("amount")%></td>
+			<td>$<%=gg.getDouble("price")*rs.getInt("amount")%></td>
 			</tr>
 			<% 
-			sum+=gg.getInt("price")*rs.getInt("amount");
+			sum+=gg.getDouble("price")*rs.getInt("amount");
 		}
 			
 		%>
 		
-		<% conn.setAutoCommit(true);
+		<% 
 	}
 	
 	%>
 	Total Price = <%=sum %>
-		<form action="confirmation.jsp" method="POST">
-		<input type="text">
+		<form action="ShoppingCart.jsp" method="POST">
+		<input type="text" name="credit" required>
 		<button type="submit">purchase</button>
 		</form>
 	
-	<%conn.close();
+	<%			conn.setAutoCommit(true);
+
+	conn.close();
 	}catch (SQLException sqle) {
 	    out.println(sqle.getMessage());
 	} catch (Exception e) {
