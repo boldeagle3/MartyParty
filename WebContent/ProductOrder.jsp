@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@include file="header.jsp" %>
 <title>Insert title here</title>
 </head>
 <body>
@@ -15,12 +16,21 @@
 				Connection conn = null;
 				conn = DriverManager.getConnection(
 				"jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
+				conn.setAutoCommit(false);
+
 		
 	%>	
-	<%	System.out.println("let it begin");
+	
+	<%	
+		System.out.println("let it begin");
+		String pro=request.getParameter("product");
 		String proccess=request.getParameter("amount");
+		if(proccess==null&&pro==null){
+			response.sendRedirect("error.jsp");
+		}
 		if(proccess!=null){
-			System.out.println("does it get in here");
+			try{
+			System.out.println("does it get in here kappa");
 			conn.setAutoCommit(false);
 			ResultSet peq=null;
 			PreparedStatement rr=conn.prepareStatement(
@@ -29,11 +39,23 @@
 			rr.setInt(2,Integer.parseInt(request.getParameter("pid")));
 			rr.setInt(3,Integer.parseInt(request.getParameter("amount")));
 			rr.executeUpdate();
+			System.out.println("does it get past here maybe");
+
+			
 			response.sendRedirect("products_browsing.jsp");
-			conn.setAutoCommit(true);
+			}catch(SQLException e){
+				%>Incorrect input<% 
+				pro=request.getParameter("pid");
+				System.out.println("Gets into that nice sweet spot");
+			}
+			catch(NumberFormatException e){
+				%>Incorrect input<% 
+				pro=request.getParameter("pid");
+				System.out.println("Gets into that nice sweet spot");
+			}
 		}
 		System.out.println("what is going on?");
-		String pro=request.getParameter("product");
+		
 		System.out.println("pro is null maybe");
 		if(pro!=null){
 			System.out.println("hello world");
@@ -50,12 +72,12 @@
 		    	System.out.println("Is tt null? "+tt.getString("name"));
 		    	%>
 		    		<table>
-		    		<form action="ProductOrder.jsp" method="POST">
+		    		<form action="ProductOrder.jsp" method="GET">
 		    		<tr>
 		    			<input type="hidden" name="pid" value="<%=Integer.parseInt(pro)%>">
 		    			<td><%=tt.getString("name") %></td>
 		    			<td><%=tt.getInt("price") %></td>
-		    			<td><input type="number" name="amount" min="1" max="2000"></td>
+		    			<td><input type="text" name="amount"></td>
 		    			<td><button type="submit">Accepted</button></td>
 		    			
 		    		</tr>
@@ -63,7 +85,6 @@
 		    		
 		    		</table>
 		    	<% 
-		    	conn.setAutoCommit(true);
 		    }
 		    }
 			
@@ -104,7 +125,7 @@
 			
 		%>
 		
-		<% conn.setAutoCommit(true);
+		<%
 	}
 	
 	
@@ -113,7 +134,9 @@
 	<!-- list shopping cart -->
 	</table>
 	<!-- ask if how much of the thing they selected from productBrowsing they wanted added to the shopping list -->
-	<%conn.close();
+	<%			conn.setAutoCommit(true);
+
+	conn.close();
 	}catch (SQLException sqle) {
 	    out.println(sqle.getMessage());
 	} catch (Exception e) {

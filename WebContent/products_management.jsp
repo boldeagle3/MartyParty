@@ -26,15 +26,19 @@
         
 		if (action.equals("Insert a new product")) {
 			// Insert a new product
-	        try {
-				%>
+			%>
 				<script type="text/javascript">
-				<%
+			<%
+	        try {
 	        	String newName = request.getParameter("new_name");
 				String newSKU = request.getParameter("new_sku");
 				String newCategory = request.getParameter("new_category");
-				Float newPrice = Float.valueOf(request.getParameter("new_price"));
-				
+				float newPrice = 0f;
+				try {
+					newPrice = Float.valueOf(request.getParameter("new_price"));
+				} catch (NumberFormatException e0) {
+					throw new Exception("price should contain only numbers");
+				}
 	        	PreparedStatement prst = conn.prepareStatement(
 	        			"INSERT INTO products (name,sku,category,price) " +
 	        			"VALUES (?,?,?,?);");
@@ -53,11 +57,12 @@
 	            		"\nsku: <%=newSKU%>" +
 	            		"\ncategory: <%=newCategory%>" +
 	            		"\nprice: <%=newPrice%>");
-	            </script>
 	            <%
 	        } catch (Exception e) {
+	        	conn.rollback();
 	        	e.printStackTrace();
 	        }
+			%></script><%
 		} else if (action.equals("Update")) {
 			// Update a product
 			try {
@@ -65,7 +70,12 @@
 				String newName = request.getParameter("new_name");
 				String newSKU = request.getParameter("new_sku");
 				String newCategory = request.getParameter("new_category");
-				float newPrice = Float.parseFloat(request.getParameter("new_price"));
+				float newPrice = 0f;
+				try {
+					Float.parseFloat(request.getParameter("new_price"));
+				} catch (NumberFormatException e0) {
+					throw new Exception("price should contain only numbers");
+				}
 				
 				PreparedStatement prst0 = conn.prepareStatement(
 						"DELETE FROM products " +
@@ -94,6 +104,7 @@
 				prst0.close();
 				prst.close();
 			} catch (Exception e) {
+				conn.rollback();
 				e.printStackTrace();
 			}
 		} else if (action.equals("Delete")) {
@@ -110,6 +121,7 @@
 				conn.commit();
 				prst.close();
 			} catch (Exception e) {
+				conn.rollback();
 				e.printStackTrace();
 			}
 		}

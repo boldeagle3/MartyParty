@@ -35,7 +35,7 @@ try {
    										", name varchar(30) NOT NULL" +
    										", sku varchar(30) UNIQUE NOT NULL" +
    										", category varchar(30) NOT NULL" +
-   										", price decimal(18,2) NOT NULL, PRIMARY KEY(id)" +
+   										", price numeric(18,2) NOT NULL CHECK (price>=0), PRIMARY KEY(id)" +
    										");"
    	);
     st.executeUpdate("CREATE TABLE cart (id          SERIAL PRIMARY KEY, userid       INTEGER REFERENCES users (id) NOT NULL,product     INTEGER REFERENCES products (id) NOT NULL, amount INT);");
