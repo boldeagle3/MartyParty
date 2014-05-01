@@ -38,6 +38,9 @@
 			rr.setInt(1, Integer.parseInt(session.getAttribute("id").toString()));
 			rr.setInt(2,Integer.parseInt(request.getParameter("pid")));
 			rr.setInt(3,Integer.parseInt(request.getParameter("amount")));
+			if(Integer.parseInt(request.getParameter("amount"))<=0){
+				Integer.parseInt("dog");
+			}
 			rr.executeUpdate();
 			System.out.println("does it get past here maybe");
 
@@ -54,6 +57,7 @@
 				System.out.println("Gets into that nice sweet spot");
 			}
 		}
+		
 		System.out.println("what is going on?");
 		
 		System.out.println("pro is null maybe");
