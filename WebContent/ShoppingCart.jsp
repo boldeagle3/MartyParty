@@ -33,7 +33,10 @@
 	if(b!=null){
 		 try { 
 			 int q= Integer.parseInt(b);
+			
 			 response.sendRedirect("confirmation.jsp");
+			 
+			
     	 } catch(NumberFormatException e) { 
     		%>Not a number<%
     	}
@@ -76,8 +79,8 @@
 	%>
 	Total Price = <%=sum %>
 		<form action="ShoppingCart.jsp" method="POST">
-		<input type="text" name="credit" required>
-		<button type="submit">purchase</button>
+		<input type="text" name="credit" required placeholder="credit card">
+		<button type="submit" >purchase</button>
 		</form>
 	
 	<%			conn.setAutoCommit(true);
