@@ -72,7 +72,7 @@
 				String newCategory = request.getParameter("new_category");
 				float newPrice = 0f;
 				try {
-					Float.parseFloat(request.getParameter("new_price"));
+					newPrice = Float.parseFloat(request.getParameter("new_price"));
 				} catch (NumberFormatException e0) {
 					throw new Exception("price should contain only numbers");
 				}
